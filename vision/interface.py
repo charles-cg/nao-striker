@@ -32,7 +32,7 @@ class Goal(object):
 
 
 def get_ball():
-    """Return Ball when a red ball is detected, None when no ball is visible."""
+    """Return Ball when an orange ball is detected, None when no ball is visible."""
     raise NotImplementedError("vision.get_ball not yet implemented")
 
 
