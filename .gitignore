@@ -1,6 +1,8 @@
-./naoqiSDK/
-./NAO_Striker_Plan.md
-./skills-lock.json
-./.claude/
-./.agents/
-./.venv/
+naoqiSDK/
+NAO_Striker_Plan.md
+skills-lock.json
+.claude/
+.agents/
+.venv/
+rules.fld/
+rules.html
