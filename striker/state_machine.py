@@ -1,6 +1,7 @@
 from __future__ import print_function, division
 
 import time
+import math
 
 APPROACH_TIMEOUT_S = 6.0
 APPROACH_SUCCESS_DISTANCE_M = 0.15
@@ -50,7 +51,7 @@ def approach(ctx):
                 ctx.logger("APPROACH: lost streak, reset")
             in_range_counter = 0
             ctx.logger("APPROACH: ball at {:.2f}m, walking".format(ball.robot_frame[0]))
-            # TODO Monday: ctx.motion.moveTo(0.05, 0.0, 0.0)
+            ctx.motion.walk_step(0.05, 0.0, 0.0)
 
         time.sleep(0.1)
 
@@ -84,12 +85,15 @@ def align(ctx):
                 ctx.logger("ALIGN: lost streak, reset")
             in_range_counter = 0
             ctx.logger("ALIGN: ball at {:.2f}m, {:.2f}m, walking".format(ball.robot_frame[0], ball.robot_frame[1]))
-            # TODO Monday: ctx.motion.moveTo(0.05, 0.0, 0.0)
+            dx_step = (ball.robot_frame[0] - ALIGN_TARGET_X_M) * 0.3
+            dy_step = (ball.robot_frame[1] - ALIGN_TARGET_Y_M) * 0.3
+            ctx.motion.walk_step(dx_step, dy_step, 0.0)
 
         time.sleep(0.1)
 
 def read_keeper(ctx):
     ctx.logger("READ_KEEPER entered")
+    ctx.motion.head_level()
     start = time.time()
 
     while True:
@@ -121,12 +125,9 @@ def kick(ctx):
     rotation = KICK_ROTATION_DEGREES.get(ctx.kick_direction, 0.0)
     ctx.logger("KICK: direction={}, rotation={:+.1f}deg".format(ctx.kick_direction, rotation))
 
-    # TODO Monday:
-    #   ctx.motion.moveTo(0.0, 0.0, math.radians(rotation))
-    #   ctx.motion.behaviorManager.runBehavior("strong_kick_right")
-    #   wait with timeout
-    
-    time.sleep(0.2)
+    ctx.motion.rotate(math.radians(rotation))
+    ctx.motion.run_behavior("strong_kick_right")
+
     ctx.logger("KICK done -> DONE")
     return "DONE"
 
